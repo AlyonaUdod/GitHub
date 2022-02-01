@@ -3,6 +3,7 @@ import axios from 'axios';
 
 const initialState = {
   repos: [],
+  query: '',
   pagination: {
     currentPage: 1,
     totalPages: 1,
@@ -17,6 +18,9 @@ export const reposSlice = createSlice({
   name: 'repos',
   initialState,
   reducers: {
+    setQuery: (state, action) => {
+      state.query = action.payload;
+    },
     addRepos: (state, action) => {
       state.repos = action.payload.items;
       state.pagination.totalPages = Math.ceil(action.payload.total_count / 20);
@@ -42,20 +46,20 @@ export const selectIsError = (state) => state.reposReducer.isError;
 
 // Actions
 const { setIsError, addRepos, setIsLoading } = reposSlice.actions;
-export const { setCurrentPage } = reposSlice.actions;
+export const { setQuery, setCurrentPage } = reposSlice.actions;
 
-export const getRepos = (query) => (dispatch, getState) => {
+export const getRepos = () => (dispatch, getState) => {
   const state = getState();
-  const { isError, pagination } = state.reposReducer;
+  const { query, isError, pagination } = state.reposReducer;
 
-  if(isError) {
+  if (isError) {
     dispatch(setIsError(null));
-  };
+  }
 
   dispatch(setIsLoading(true));
   return axios
     .get(
-      `https://api.github.com/search/repositories?q=${query}&per_page=20&page=${pagination.currentPage}`,
+      `https://api.github.com/search/repositories?q=${query ? query : 'react'}&per_page=20&page=${pagination.currentPage}`,
       {
         accept: 'application/vnd.github.v3+json',
       },
