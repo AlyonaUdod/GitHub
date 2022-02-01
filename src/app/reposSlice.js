@@ -59,7 +59,9 @@ export const getRepos = () => (dispatch, getState) => {
   dispatch(setIsLoading(true));
   return axios
     .get(
-      `https://api.github.com/search/repositories?q=${query ? query : 'react'}&per_page=20&page=${pagination.currentPage}`,
+      `https://api.github.com/search/repositories?q=${query ? query : 'react'}&per_page=20&page=${
+        pagination.currentPage
+      }`,
       {
         accept: 'application/vnd.github.v3+json',
       },
