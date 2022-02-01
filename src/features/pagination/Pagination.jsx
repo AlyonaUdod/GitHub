@@ -1,6 +1,6 @@
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { setCurrentPage } from '../../app/reposSlice';
+import { setCurrentPage, getRepos } from '../../app/reposSlice';
 import styles from './Pagination.module.css';
 const getPagination = ({ current, total, setCurrent }) => {
   let arr = [];
@@ -46,12 +46,17 @@ const Pagination = () => {
   const total = useSelector((state) => state.reposReducer.pagination.totalPages);
   const repos =  useSelector((state) => state.reposReducer.repos);
 
+  const getNextPageRepos = (page) => {
+    dispatch(setCurrentPage(page));
+    dispatch(getRepos());
+  };
+
   if(repos.length) {
     return (
     <div className={styles.pagination}>
       <button
         type='button'
-        onClick={current !== 1 ? () => dispatch(setCurrentPage(current - 1)) : undefined}
+        onClick={current !== 1 ? () => getNextPageRepos(current-1) : undefined}
         disabled={current === 1}
       >
         Previos
@@ -59,11 +64,11 @@ const Pagination = () => {
       {getPagination({
         current,
         total,
-        setCurrent: (page) => dispatch(setCurrentPage(page)),
+        setCurrent: (page) => getNextPageRepos(page),
       })}
       <button
         type='button'
-        onClick={current !== total ? () => dispatch(setCurrentPage(current + 1)) : undefined}
+        onClick={current !== total ? () => getNextPageRepos(current+1) : undefined}
         disabled={current === total}
       >
         Next

@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import Repos from './features/repos/Repos';
 import Pagination from './features/pagination/Pagination';
 import { getRepos, setCurrentPage } from './app/reposSlice';
-import styles from './App.module.css'
+import styles from './App.module.css';
 
 const App = () => {
   const dispatch = useDispatch();
@@ -12,20 +12,17 @@ const App = () => {
   const isError = useSelector((state) => state.reposReducer.isError);
 
   useEffect(() => {
-    dispatch(getRepos('react'))
-  }, []);
-
-  useEffect(() => {
-    dispatch(getRepos(query ? query : 'react'))
-  }, [current]);
-
-  useEffect(() => {
-    if(current !== 1) {
+    if (current !== 1) {
       dispatch(setCurrentPage(1));
-    };
-    dispatch(getRepos(query ? query : 'react'))
+    }
+    dispatch(getRepos(query ? query : 'react'));
   }, [query]);
 
+  useEffect(() => {
+    if (isError) {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    };
+  }, [isError]);
   return (
     <div className={styles.appWrapper}>
       <input
@@ -34,8 +31,8 @@ const App = () => {
         onChange={(e) => setQuery(e.target.value)}
       />
       {isError && <p className={styles.errorMsg}>{isError}</p>}
-      <Repos/>
-      <Pagination/>
+      <Repos />
+      <Pagination />
     </div>
   );
 };
