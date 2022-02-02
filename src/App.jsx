@@ -12,9 +12,6 @@ const App = () => {
   const isError = useSelector((state) => state.reposReducer.isError);
 
   useEffect(() => {
-    if (current !== 1) {
-      dispatch(setCurrentPage(1));
-    }
     dispatch(getRepos());
   }, [query]);
 

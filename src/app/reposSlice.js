@@ -20,6 +20,7 @@ export const reposSlice = createSlice({
   reducers: {
     setQuery: (state, action) => {
       state.query = action.payload;
+      state.pagination.currentPage = 1;
     },
     addRepos: (state, action) => {
       state.repos = action.payload.items;
@@ -54,7 +55,7 @@ export const getRepos = () => (dispatch, getState) => {
 
   if (isError) {
     dispatch(setIsError(null));
-  }
+  };
 
   dispatch(setIsLoading(true));
   return axios
