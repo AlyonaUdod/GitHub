@@ -2,13 +2,12 @@ import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import Repos from './features/repos/Repos';
 import Pagination from './features/pagination/Pagination';
-import { getRepos, setCurrentPage, setQuery } from './app/reposSlice';
+import { getRepos, setQuery } from './app/reposSlice';
 import styles from './App.module.css';
 
 const App = () => {
   const dispatch = useDispatch();
   const query = useSelector((state) => state.reposReducer.query);
-  const current = useSelector((state) => state.reposReducer.pagination.currentPage);
   const isError = useSelector((state) => state.reposReducer.isError);
 
   useEffect(() => {
